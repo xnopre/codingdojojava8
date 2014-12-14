@@ -3,7 +3,9 @@ package fr.remiguitreau.codingdojo.java8;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +40,23 @@ public class CDJava8 {
 			}
 		}
 		return goodValues;
+	}
+
+	public Map<Quality, List<Measurement>> organizeMeasurementsByQualityAndSortedByTimestamp(
+			List<Measurement> measurements) {
+		final Map<Quality, List<Measurement>> result = new HashMap<Quality, List<Measurement>>();
+		for(final Measurement measurement : measurements) {
+			if(measurement.getQualityOrNull() != null) {
+				if(!result.containsKey(measurement.getQualityOrNull())) {
+					result.put(measurement.getQualityOrNull(), new ArrayList<Measurement>());
+				}
+				result.get(measurement.getQualityOrNull()).add(measurement);
+			}
+		}
+		for(final List<Measurement> qualityMeasurements : result.values()) {
+			Collections.sort(qualityMeasurements, MeasurementComparatorByTimestamp.getInstance());
+		}
+		return result;
 	}
 
 }
