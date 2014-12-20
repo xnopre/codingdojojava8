@@ -2,6 +2,7 @@ package fr.remiguitreau.codingdojo.java8;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.inOrder;
 
 import java.util.Date;
 import java.util.List;
@@ -12,7 +13,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -34,7 +34,7 @@ public class CDJava8Test {
 
 		cdjava8.submitPositiveMeasurementByDecreasingValueOrder(asList(meas1, meas2, meas3, meas4, meas5));
 
-		final InOrder check = Mockito.inOrder(measurementSubmitterMock);
+		final InOrder check = inOrder(measurementSubmitterMock);
 		check.verify(measurementSubmitterMock).submitMeasurement(meas2);
 		check.verify(measurementSubmitterMock).submitMeasurement(meas4);
 		check.verify(measurementSubmitterMock).submitMeasurement(meas3);
@@ -50,7 +50,9 @@ public class CDJava8Test {
 		final Measurement meas4 = new Measurement(new Date(4000), 2f);
 		final Measurement meas5 = new Measurement(new Date(5000), 0.7f, Quality.GOOD);
 
-		assertEquals(asList(5f, 1f, 0.7f), cdjava8.onlyGoodValues(asList(meas1, meas2, meas3, meas4, meas5)));
+		final List<Float> onlyGoodValues = cdjava8.onlyGoodValues(asList(meas1, meas2, meas3, meas4, meas5));
+
+		assertEquals(asList(5f, 1f, 0.7f), onlyGoodValues);
 	}
 
 	@Test
@@ -69,4 +71,5 @@ public class CDJava8Test {
 		assertEquals(asList(meas3, meas5), measByQuality.get(Quality.GOOD));
 		assertEquals(asList(meas1), measByQuality.get(Quality.BAD));
 	}
+
 }
