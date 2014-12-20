@@ -12,7 +12,6 @@ public class CDJava8 {
 	private final MeasurementSubmitter measurementSubmitter;
 
 	public CDJava8(final MeasurementSubmitter measurementSubmitter) {
-		super();
 		this.measurementSubmitter = measurementSubmitter;
 	}
 
@@ -38,7 +37,7 @@ public class CDJava8 {
 		for (final Measurement measurement : measurements) {
 			if (measurement.getQualityOrNull() != null
 					&& measurement.getQualityOrNull().ordinal() <= Quality.GOOD
-							.ordinal()) {
+					.ordinal()) {
 				goodValues.add(measurement.getValue());
 			}
 		}
